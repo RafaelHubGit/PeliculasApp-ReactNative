@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React from 'react'
-import { View, Image, StyleSheet, Dimensions, Text, ActivityIndicator } from 'react-native';
-import { RootStackparams } from '../navigation/Navigation';
+import { View, Image, StyleSheet, Dimensions, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Navigation, RootStackparams } from '../navigation/Navigation';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -13,7 +13,7 @@ const screenHeight = Dimensions.get('screen').height;
 
 interface Props extends StackScreenProps<RootStackparams, 'DetailScreen'>{}; //Esto se hace para que reciba los parametros por el route 
 
-export const DetailScreen = ( { route }: Props ) => { //aqui se esta obteniendo el route 
+export const DetailScreen = ( { route, navigation }: Props ) => { //aqui se esta obteniendo el route 
   
   const movie = route.params;
   const url = `https://image.tmdb.org/t/p/w500${ movie.poster_path }`;
@@ -42,6 +42,18 @@ export const DetailScreen = ( { route }: Props ) => { //aqui se esta obteniendo 
             ? <ActivityIndicator size={60} color="grey" style={{ marginTop: 20 }}/>
             : <MovieDetails movieFull={ movieFull! } cast={ cast }/>
         }
+
+        {/* boton para cerrar  */}
+        <TouchableOpacity 
+          style={ styles.backBotton }
+          onPress={ () => navigation.pop() }
+        >
+          <Icon
+            color="white"
+            name="arrow-back-outline"
+            size={ 60 }
+          />
+        </TouchableOpacity>
 
     </ScrollView>
   )
@@ -90,5 +102,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: 'bold'
+  },
+  backBotton: {
+    position: "absolute",
+    zIndex: 999,
+    elevation: 9,
+    top: 30,
+    left: 5
   }
 })
